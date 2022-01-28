@@ -1,0 +1,70 @@
+<html>
+    <head></head>
+    <style>
+        body {
+        background-color: LightGray;
+        }
+
+        h1 {
+        color: white;
+        text-align: center;
+        }
+
+        p {
+        font-family: verdana;
+        font-size: 20px;
+        }
+    </style>
+    <script>
+        var myVar=setInterval(function(){getTime()},1000);
+        function secondsFormat(sec) {
+            let day = Math.floor(sec / 86400);
+            let hour = Math.floor(sec % 86400 / 3600);
+            let minute = Math.floor(sec % 3600 / 60);
+            let second = sec % 60;
+            if (day > 0)
+                sDay = day + "天 ";
+            else
+                sDay = "";
+            if (hour < 10) {
+                hour = "0" + hour;
+            }
+            if (minute < 10) {
+                minute = "0" + minute;
+            }
+            if (second < 10) {
+                second = "0" + second;
+            }
+
+            return sDay + hour + ":" + minute + ":" + second;
+        }
+
+        function getTime() {
+            var off_work_date = Date.parse(new Date(document.getElementById("date").value + "Z")) - (8 * 3600 *1000)
+            var timestamp = Date.parse(new Date());
+            var now_date = new Date()
+            var data_diff = (off_work_date - timestamp)/1000
+            if (data_diff < 0 )
+            {
+                document.getElementById("time_diff_content").innerHTML= "恭喜你已经放假了";
+                document.getElementById("time_diff").innerHTML= ("");
+            }
+            else
+            {
+                document.getElementById("time_diff_content").innerHTML= "放假倒计时:";
+                document.getElementById("time_diff").innerHTML= secondsFormat(data_diff);
+            }
+        }
+        getTime();
+
+    </script>
+    <body>
+        <h1>新年快乐</h1>
+        <p id="date_content"> 放假时间:</p>
+        <!--input type="datetime-local" id="date" oninput="getTime()" value = '2022-01-30T18:30'/-->
+        <input type="datetime-local" id="date" oninput="getTime()" value = '{{.off_work_date}}'/>
+        <p id="time_diff_content"> 放假倒计时:</p>
+        <p id="time_diff"> </p>
+        <body onload="getTime()">
+    </body>
+</html>
